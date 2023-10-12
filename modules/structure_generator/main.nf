@@ -2,6 +2,8 @@ params.outdir = "results"
 
 // Define the Nextflow module 'structure-generator'
 process STRUCTURE {
+
+    publishDir params.outdir, mode:'copy'
     
     // Define the input parameters for the module
     input:
@@ -11,7 +13,7 @@ process STRUCTURE {
 
     // Define the output directory for this process
     output:
-    path "results"
+    path "*"
 
     // Define the command to run
     script:
