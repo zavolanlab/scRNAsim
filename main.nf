@@ -22,26 +22,14 @@ log.info """\
  """
 
 // import modules
-include { CDNA } from './modules/cdna_generator'
-include { FRAGMENT } from './modules/fragment_selector'
-include { PRIME } from './modules/priming_site_predictor'
-include { SEQUENCER } from './modules/read_sequencer'
-include { EXTRACT } from './modules/sequence_extractor'
 include { STRUCTURE } from './modules/structure_generator'
-include { SAMPLER } from './modules/transcript_sampler'
 
 
 /* 
  * main script flow
  */
 workflow {
-    SAMPLER( params.trx_cnt )
-    STRUCTURE( SAMPLER.out, params.annotation )
-    EXTRACT( STRUCTURE.out, params.polya )
-    PRIME( EXTRACT.out )
-    CDNA( PRIME.out )
-    FRAGMENT( CDNA.out )
-    SEQUENCER( FRAGMENT.out, params.genome )
+    STRUCTURE( params.repTransCsv, params.repTransGtf )
 }
 
 /* 
