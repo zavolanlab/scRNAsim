@@ -43,7 +43,7 @@ n_trx_ch = Channel.value( params.n_trx )
  */
 workflow {
     SAMPLER( trx_cnt_ch, annotation_ch, n_trx_ch )
-    STRUCTURE( SAMPLER.out_csv, SAMPLER.out_gtf, params.prob )
+    STRUCTURE( params.prob, SAMPLER.out.csv, SAMPLER.out.gtf)
     }
 
 /* 
