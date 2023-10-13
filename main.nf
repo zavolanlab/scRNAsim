@@ -19,6 +19,7 @@ log.info """\
  transcript annotation: ${params.annotation}
  number of transcripts to sample: ${params.n_trx}
  outdir       : ${params.outdir}
+ inclusion prob: ${params.prob}
  """
 
 // import modules
@@ -42,7 +43,7 @@ n_trx_ch = Channel.value( params.n_trx )
  */
 workflow {
     SAMPLER( trx_cnt_ch, annotation_ch, n_trx_ch )
-    STRUCTURE( SAMPLER.out_csv, SAMPLER.out_gtf, params.probIncl )
+    STRUCTURE( SAMPLER.out_csv, SAMPLER.out_gtf, params.prob )
     }
 
 /* 
