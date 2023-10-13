@@ -15,10 +15,8 @@ params.outdir = "results"
 log.info """\
  SINGLE CELL RNA-SEQ SIMULATION - N F   P I P E L I N E
  ===================================
- genome: ${params.genome}
- transcript counts: ${params.trx_cnt}
- transcript annotation: ${params.annotation}
  outdir       : ${params.outdir}
+ inclusion prob: ${params.prob}
  """
 
 // import modules
@@ -29,7 +27,7 @@ include { STRUCTURE } from './modules/structure_generator'
  * main script flow
  */
 workflow {
-    STRUCTURE( params.repTransCsv, params.repTransGtf )
+    STRUCTURE( params.prob, params.repTransCsv, params.repTransGtf )
 }
 
 /* 

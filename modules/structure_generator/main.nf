@@ -7,9 +7,9 @@ process STRUCTURE {
     
     // Define the input parameters for the module
     input:
+    val prob
     path repTransCsv
     path repTransGtf
-    float probIncl
 
     // Define the output directory for this process
     output:
@@ -19,8 +19,8 @@ process STRUCTURE {
     script:
     """
     structure-generator \
-        -p ${probIncl} \
-        ${repTransCsv} \
-        ${repTransGtf}
+        -p $prob \
+        $repTransCsv \
+        $repTransGtf
     """
 }
