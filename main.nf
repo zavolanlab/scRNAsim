@@ -15,33 +15,19 @@ params.outdir = "results"
 log.info """\
  SINGLE CELL RNA-SEQ SIMULATION - N F   P I P E L I N E
  ===================================
- genome: ${params.genome}
- transcript counts: ${params.trx_cnt}
- transcript annotation: ${params.annotation}
  outdir       : ${params.outdir}
+ inclusion prob: ${params.prob}
  """
 
 // import modules
-include { CDNA } from './modules/cdna_generator'
-include { FRAGMENT } from './modules/fragment_selector'
-include { PRIME } from './modules/priming_site_predictor'
-include { SEQUENCER } from './modules/read_sequencer'
-include { EXTRACT } from './modules/sequence_extractor'
 include { STRUCTURE } from './modules/structure_generator'
-include { SAMPLER } from './modules/transcript_sampler'
 
 
 /* 
  * main script flow
  */
 workflow {
-    SAMPLER( params.trx_cnt )
-    STRUCTURE( SAMPLER.out, params.annotation )
-    EXTRACT( STRUCTURE.out, params.polya )
-    PRIME( EXTRACT.out )
-    CDNA( PRIME.out )
-    FRAGMENT( CDNA.out )
-    SEQUENCER( FRAGMENT.out, params.genome )
+    STRUCTURE( params.prob, params.repTransCsv, params.repTransGtf )
 }
 
 /* 
