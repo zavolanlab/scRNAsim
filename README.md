@@ -11,13 +11,6 @@ conda activate scrnasim
 ```
 
 
-If you would like to contribute to _scRNAsim_ development, you may find it 
-useful to further update your environment with the development dependencies:
-
-```bash
-conda env update -f environment-dev.yml
-```
-
 ### Workflow
 
 The workflow makes use of the tools available in the [scRNAsim-toolz](https://github.com/zavolanlab/scRNAsim-toolz) repo. These are:
