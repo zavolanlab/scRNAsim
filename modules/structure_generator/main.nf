@@ -13,7 +13,8 @@ process STRUCTURE {
 
     // Define the output directory for this process
     output:
-    path "*"
+    path "*.gtf", emit: gtf
+    path "*.csv", emit: csv
 
     // Define the command to run
     script:

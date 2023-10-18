@@ -29,12 +29,14 @@ include { STRUCTURE } from './modules/structure_generator'
 //include { FRAGMENT } from './modules/fragment_selector'
 //include { PRIME } from './modules/priming_site_predictor'
 //include { SEQUENCER } from './modules/read_sequencer'
-//include { EXTRACT } from './modules/sequence_extractor'
+include { EXTRACT } from './modules/sequence_extractor'
 
 // Define inputs
 trx_cnt_ch = Channel.fromPath( params.trx_cnt )
 annotation_ch = Channel.fromPath( params.annotation )
 n_trx_ch = Channel.value( params.n_trx )
+polyA_len_ch = Channel.value( params.polyA_len )
+genome_ch = Channel.fromPath( params.genome )
 
 
 
@@ -44,6 +46,8 @@ n_trx_ch = Channel.value( params.n_trx )
 workflow {
     SAMPLER( trx_cnt_ch, annotation_ch, n_trx_ch )
     STRUCTURE( params.prob, SAMPLER.out.csv, SAMPLER.out.gtf)
+    sampled_gtf_ch = STRUCTURE.out.gtf
+    EXTRACT( sampled_gtf_ch, polyA_len_ch, genome_ch )
     }
 
 /* 
