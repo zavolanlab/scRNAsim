@@ -4,16 +4,16 @@ process RIBLAST {
     container "quay.io/biocontainers/riblast:1.2.0--hdcf5f25_0"
 
     input:
-    path transcriptSeq
-    path primerSeq
+    path extracted_seqs_ch
+    path primerSeq_ch
 
     output:
     path "riblast_output.txt", emit: txt
 
     script:
     """
-    RIblast db -i $transcriptSeq -o riblast_db
-    RIblast ris -i $primerSeq -o riblast_output.txt -d riblast_db
+    RIblast db -i $extracted_seqs_ch -o riblast_db
+    RIblast ris -i $primerSeq_ch -o riblast_output.txt -d riblast_db
     """
 }
 
@@ -43,13 +43,13 @@ process POST_RIBLAST {
 workflow PRIME {
 
     take:
-	transcriptSeq
-    primerSeq
+	extracted_seqs_ch
+    primerSeq_ch
 
     main:   
     RIBLAST( 
-        transcriptSeq, 
-        primerSeq )
+        extracted_seqs_ch, 
+        primerSeq_ch )
 	riblast_output = RIBLAST.out.txt
 
 	POST_RIBLAST(
