@@ -1,5 +1,6 @@
 process SAMPLER {
 
+    publishDir params.outdir, mode:'copy'
 
     input:
     path in_csv

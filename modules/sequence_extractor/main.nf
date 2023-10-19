@@ -23,7 +23,7 @@ process MAKE_BED {
 
 process GET_SEQS {
     label "get_seqs"
-    container 'quay.io/biocontainers/bedtools:2.24.0'
+    container 'quay.io/biocontainers/bedtools:2.27.1--hdcf5f25_8'
     publishDir params.outdir, mode:'copy'
     
     input:
@@ -38,6 +38,7 @@ process GET_SEQS {
     bedtools getfasta \
         -fi $genome_ch \
         -bed $bed \
+        -name \
         -s \
         -fo "output.fasta"
     """
@@ -72,10 +73,24 @@ workflow EXTRACT {
         genome_ch
 
     main:
+    MAKE_BED( 
+        sampled_gtf_ch
+        )
 
-    MAKE_BED( sampled_gtf_ch )
-    GET_SEQS( MAKE_BED.out.bed , genome_ch)
-    MAKE_TRANSCRIPTS( GET_SEQS.out.fasta, polyA_len_ch )
+    GET_SEQS( 
+        MAKE_BED.out.bed,
+        genome_ch
+        )
+
+    MAKE_TRANSCRIPTS( 
+        GET_SEQS.out.fasta,
+        polyA_len_ch
+        )
+
+    polya_fasta_ch = MAKE_TRANSCRIPTS.out.polya_fasta
+
+    emit:
+    polya_fasta_ch
     }
 
 
