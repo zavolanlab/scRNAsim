@@ -29,7 +29,7 @@ include { EXTRACT } from './modules/sequence_extractor'
 include { PRIME } from './modules/priming_site_predictor'
 include { CDNA } from './modules/cdna_generator'
 include { FRAGMENT } from './modules/fragment_selector'
-//include { SEQUENCER } from './modules/read_sequencer'
+include { SEQUENCER } from './modules/read_sequencer'
 
 
 // Define inputs
@@ -41,6 +41,7 @@ genome_ch = Channel.fromPath( params.genome )
 primerSeq_ch = Channel.fromPath( params.primerSeq )
 frag_mean = Channel.value( params.frag_mean )
 frag_sd = Channel.value( params.frag_sd )
+read_length = Channel.value( params.read_length )
 
 /* 
  * main script flow
@@ -59,6 +60,7 @@ workflow {
     cdna_counts = CDNA.out.csv
     FRAGMENT( cdna_seq, cdna_counts, frag_mean, frag_sd )
     terminal_fragments = FRAGMENT.out.fa
+    SEQUENCER( terminal_fragments, read_length)
     }
 
 /* 
