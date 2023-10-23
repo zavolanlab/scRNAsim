@@ -1,4 +1,3 @@
-// Define the Nextflow module 'RIBLAST'
 process RIBLAST {
     label "RIblast_process"
     container "quay.io/biocontainers/riblast:1.2.0--hdcf5f25_0"
@@ -17,20 +16,16 @@ process RIBLAST {
     """
 }
 
-// // Define the Nextflow module 'POST_RIBLAST'
 process POST_RIBLAST {
 
     publishDir params.outdir, mode:'copy'
     
-    // Define the input parameters for the module
     input:
     path riblast_output
 
-    // Define the output directory for this process
     output:
     path "priming_sites.gtf", emit: gtf
 
-    // Define the command to run
     script:
     """
     priming-site-predictor \
@@ -39,7 +34,6 @@ process POST_RIBLAST {
     """
 }
 
-// Define the Nextflow workflow 'PRIME'
 workflow PRIME {
 
     take:
