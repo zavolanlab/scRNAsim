@@ -28,7 +28,7 @@ include { STRUCTURE } from './modules/structure_generator'
 include { EXTRACT } from './modules/sequence_extractor'
 include { PRIME } from './modules/priming_site_predictor'
 include { CDNA } from './modules/cdna_generator'
-//include { FRAGMENT } from './modules/fragment_selector'
+include { FRAGMENT } from './modules/fragment_selector'
 //include { SEQUENCER } from './modules/read_sequencer'
 
 
@@ -39,6 +39,8 @@ n_trx_ch = Channel.value( params.n_trx )
 polyA_len_ch = Channel.value( params.polyA_len )
 genome_ch = Channel.fromPath( params.genome )
 primerSeq_ch = Channel.fromPath( params.primerSeq )
+frag_mean = Channel.value( params.frag_mean )
+frag_sd = Channel.value( params.frag_sd )
 
 /* 
  * main script flow
@@ -55,6 +57,8 @@ workflow {
     CDNA( extracted_seqs_ch, priming_sites_gtf, sampled_transcript_counts_csv )
     cdna_seq = CDNA.out.fa
     cdna_counts = CDNA.out.csv
+    FRAGMENT( cdna_seq, cdna_counts, frag_mean, frag_sd )
+    terminal_fragments = FRAGMENT.out.fa
     }
 
 /* 

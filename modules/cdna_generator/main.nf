@@ -1,6 +1,6 @@
 params.outdir = "results"
 
-// Define the Nextflow module 'structure-generator'
+// Define the Nextflow module 'CDNA'
 process CDNA {
 
     publishDir params.outdir, mode:'copy'
